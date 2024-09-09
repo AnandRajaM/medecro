@@ -1,0 +1,14 @@
+def addedInteger(nums1, nums2):
+        nums1.sort()
+        nums2.sort()
+
+        
+
+        return abs(nums1[0]-nums2[0])
+        
+
+        
+
+
+
+addedInteger([2,6,4],[9,7,5])

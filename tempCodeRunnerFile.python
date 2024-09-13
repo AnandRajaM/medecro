@@ -1,14 +1,10 @@
-def addedInteger(nums1, nums2):
-        nums1.sort()
-        nums2.sort()
 
-        
+def reverseVowels(s):
 
-        return abs(nums1[0]-nums2[0])
-        
+    lptr = 0
+    rptr = len(s)
 
-        
+    print(len(s))
 
 
-
-addedInteger([2,6,4],[9,7,5])
+reverseVowels("test")

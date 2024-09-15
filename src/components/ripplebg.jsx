@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { IconHome } from "@tabler/icons-react";
 import { cn } from "../lib/utils";
 import GradientBackground from "./gradientbg2";
+import { useNavigate } from "react-router-dom";
 
 const FloatingNav = ({ className }) => {
   return (
@@ -89,9 +90,21 @@ const Ripple = React.memo(function Ripple({
 const VoiceInteraction = () => {
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState("");
+  const [audioUrl, setAudioUrl] = useState(null); // Store the audio URL here
+  const [navigateTo, setNavigateTo] = useState(""); // Store the navigation path
+
+  const navigate = useNavigate(); // useNavigate from react-router-dom
+
+  useEffect(() => {
+    if (navigateTo) {
+      navigate(navigateTo); // Navigate to the path returned from the backend
+    }
+  }, [navigateTo, navigate]);
 
   const handleListen = () => {
-    if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
+    if (
+      !("webkitSpeechRecognition" in window || "SpeechRecognition" in window)
+    ) {
       alert("Sorry, your browser does not support the Web Speech API.");
       return;
     }
@@ -108,10 +121,36 @@ const VoiceInteraction = () => {
       setIsListening(true);
     };
 
-    recognition.onresult = (event) => {
+    recognition.onresult = async (event) => {
       const speechResult = event.results[0][0].transcript;
       setTranscript(speechResult);
       setIsListening(false);
+
+      try {
+        // Fetching from the Flask backend running on 127.0.0.1:5000
+        const response = await fetch(
+          "http://127.0.0.1:5000/handle-voice-command",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ command: speechResult }),
+          }
+        );
+
+        const data = await response.json();
+
+        // Set the audio URL and navigation path
+        if (data.audio_url) {
+          setAudioUrl(`http://127.0.0.1:5000${data.audio_url}`); // Ensure correct URL path
+        }
+        if (data.navigate_to) {
+          setNavigateTo(data.navigate_to); // Navigate to the correct path
+        }
+      } catch (error) {
+        console.error("Error handling voice command:", error);
+      }
     };
 
     recognition.onerror = (event) => {
@@ -163,11 +202,11 @@ const VoiceInteraction = () => {
                 transition={
                   isListening
                     ? {
-                      duration: 5,
-                      repeat: Infinity,
-                      repeatType: "reverse",
-                      ease: "easeInOut",
-                    }
+                        duration: 5,
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        ease: "easeInOut",
+                      }
                     : undefined
                 }
                 style={{
@@ -190,7 +229,16 @@ const VoiceInteraction = () => {
             </div>
           </div>
 
-          {transcript && console.log(transcript)}
+          {transcript && (
+            <p className="text-lg text-black mt-5">You said: "{transcript}"</p>
+          )}
+
+          {/* Play the audio if the audio URL is available */}
+          {audioUrl && (
+            <div className="mt-5">
+              <audio controls src={audioUrl} autoPlay />
+            </div>
+          )}
         </div>
       </div>
     </section>

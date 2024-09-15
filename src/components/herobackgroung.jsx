@@ -18,12 +18,11 @@ function Hero() {
       <GradientBackground />
 
       <div className="relative text-center space-y-4 mt-20 z-10">
-        <NavBar />
         {/* Container for the text with gradient mask */}
         <div
           className="relative inline-block"
           style={{
-            maskImage: 'linear-gradient(to bottom, rgba(255, 255, 255, 0) -30%, rgba(255, 255, 255, 1) 100%)',
+            maskImage: 'linear-gradient(to bottom, rgba(255, 255, 255, 0) -5%, rgba(255, 255, 255, 1) 100%)',
             WebkitMaskImage: 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%)',
             maskSize: '100% 100%',
             WebkitMaskSize: '100% 100%',

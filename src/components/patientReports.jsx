@@ -8,6 +8,11 @@ function PatientReports() {
         <h2 className="text-2xl font-bold mb-8 font-aleo">Medical Dashboard</h2>
         <ul className="font-varelaround">
           <li className="mb-4">
+            <a href="/talk" className="hover:underline">
+              Unoistant
+            </a>
+          </li>
+          <li className="mb-4">
             <a href="/dashboard" className="hover:underline">
               Dashboard
             </a>

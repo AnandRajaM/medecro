@@ -111,8 +111,8 @@ function Dashboard() {
             <tbody className="font-varelaround">
               <tr>
                 <td className="border px-4 py-2">Dr. Anand Raja</td>
-                <td className="border px-4 py-2">11th Sept 2024</td>
-                <td className="border px-4 py-2">10:00 AM</td>
+                <td className="border px-4 py-2">15th Sept 2024</td>
+                <td className="border px-4 py-2">2:30 PM</td>
                 <td className="border px-4 py-2 text-[#5100ff]">Today</td>
               </tr>
               <tr>

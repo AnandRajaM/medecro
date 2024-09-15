@@ -17,11 +17,6 @@ function PatientReports() {
               Dashboard
             </a>
           </li>
-          <li className="mb-4">
-            <a href="/patient-reports" className="hover:underline">
-              Reports
-            </a>
-          </li>
           {/* Add other navigation links */}
         </ul>
       </div>

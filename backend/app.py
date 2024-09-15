@@ -87,7 +87,7 @@ def handle_voice_command():
     # Handle the specific voice command to summarize medical report
         
     elif "hindi" in command and "summarise" in command:
-        # Provide a summary of John Doe's medical report in hindi
+        # Provide a summary of Atharv medical report in hindi
         response_text = "Atharv Rastogi, jo ki 26 saal ka hai, recent test results ke hisaab se bilkul healthy hai. Uska blood pressure perfect hai, 120/80, aur blood sugar bhi bilkul normal hai, 90 mg/dL. Cholesterol levels fit hain, 190 mg/dL, aur vitamin D levels bhi sahi hain, jo acchi diet aur dhoop lene se ho sakte hain. Uska hemoglobin 14 g/dL hai, jo dikhata hai ki uske blood mein oxygen levels kaafi ache hain. Immune system bhi strong hai kyunki white blood cell count 5,000 /µL hai. Platelets bhi theek hain, 250,000 /µL, iska matlab uska blood clotting bhi normal hai. Sodium aur potassium levels normal hain, jo dikhata hai ki uska hydration aur electrolyte balance sahi hai. Calcium levels bhi theek hain, jo strong bones aur muscle function ka indicator hai. Overall, John ke saare test results normal range mein hain. Bas yaad rahe ki balanced diet, regular exercise aur routine checkups ko follow karta rahe."
     
     elif "summarise" in command or "report" in command:

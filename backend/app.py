@@ -80,9 +80,9 @@ def handle_voice_command():
     page_url = None
     
     # Handle the specific voice command about appointments
-    if "appointments" in command or "today" in command:
+    if "appointment" in command or "today" in command:
         # Respond with information about the user's appointments
-        response_text = "Today you have 3 appointments."
+        response_text = "Today you have an appointment with Dr. Anand Raja"
     
     # Handle the specific voice command to summarize medical report
         
@@ -92,7 +92,7 @@ def handle_voice_command():
     
     elif "summarise" in command or "report" in command:
         # Provide a summary of Atharv medical report
-        response_text = "John Doe, a 26-year-old male, is in good health based on recent test results. His blood pressure is perfect at 120/80, and his blood sugar is well within the normal range at 90 mg/dL. Cholesterol levels are healthy at 190 mg/dL, and his vitamin D is normal, likely due to a good diet and sun exposure. His hemoglobin is at 14 g/dL, indicating good oxygen levels in his blood. His immune system looks healthy with a white blood cell count of 5,000 /µL, and his platelets are normal at 250,000 /µL, meaning his blood clotting is fine. Sodium and potassium levels are both normal, showing balanced hydration and electrolyte function. His calcium levels are also good, suggesting strong bones and muscle function. Overall, John's tests are all in the normal range. Just a reminder to keep up with a balanced diet, regular exercise, and routine checkups."
+        response_text = "Atharv Rastogi, a 26-year-old male, is in good health based on recent test results. His blood pressure is perfect at 120/80, and his blood sugar is well within the normal range at 90 mg/dL. Cholesterol levels are healthy at 190 mg/dL, and his vitamin D is normal, likely due to a good diet and sun exposure. His hemoglobin is at 14 g/dL, indicating good oxygen levels in his blood. His immune system looks healthy with a white blood cell count of 5,000 /µL, and his platelets are normal at 250,000 /µL, meaning his blood clotting is fine. Sodium and potassium levels are both normal, showing balanced hydration and electrolyte function. His calcium levels are also good, suggesting strong bones and muscle function. Overall, John's tests are all in the normal range. Just a reminder to keep up with a balanced diet, regular exercise, and routine checkups."
     
     # Default response for other navigation commands
     else:

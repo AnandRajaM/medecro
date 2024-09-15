@@ -110,6 +110,12 @@ function Dashboard() {
             </thead>
             <tbody className="font-varelaround">
               <tr>
+                <td className="border px-4 py-2">Dr. Anand Raja</td>
+                <td className="border px-4 py-2">11th Sept 2024</td>
+                <td className="border px-4 py-2">10:00 AM</td>
+                <td className="border px-4 py-2 text-[#5100ff]">Today</td>
+              </tr>
+              <tr>
                 <td className="border px-4 py-2">Dr. Pankaj Sharma</td>
                 <td className="border px-4 py-2">11th Sept 2024</td>
                 <td className="border px-4 py-2">10:00 AM</td>
@@ -125,7 +131,7 @@ function Dashboard() {
                 <td className="border px-4 py-2">Dr. Rohin Hegde</td>
                 <td className="border px-4 py-2">12th Sept 2024</td>
                 <td className="border px-4 py-2">9:00 AM</td>
-                <td className="border px-4 py-2 text-red-500">Canceled</td>
+                <td className="border px-4 py-2 text-[#ff246d]">Canceled</td>
               </tr>
             </tbody>
           </table>
@@ -156,7 +162,10 @@ function Dashboard() {
               </p>
             </li>
           </ul>
-          <a href="#" className="text-[#5100ff] font-varelaround hover:underline mt-4 block">
+          <a
+            href="#"
+            className="text-[#5100ff] font-varelaround hover:underline mt-4 block"
+          >
             See All
           </a>
         </div>

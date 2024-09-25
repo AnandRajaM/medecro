@@ -2,6 +2,7 @@ import React from "react";
 import { auth } from "../firebase-config";
 import { signOut, deleteUser } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
+import VoiceInteraction from "./voicecmpt";
 
 function Dashboard() {
   const [user, loading] = useAuthState(auth);
@@ -55,6 +56,9 @@ function Dashboard() {
               Settings
             </a>
           </li>
+
+
+            
         </ul>
       </div>
 

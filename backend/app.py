@@ -10,12 +10,31 @@ from openai import OpenAI
 from datetime import datetime
 from dotenv import load_dotenv
 import time
-
+import requests
+from PyPDF2 import PdfReader
+import io
+import time
 # Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+
+def pdf_content(pdf_url):
+    response = requests.get(pdf_url)
+
+    if(response.status_code == 200):
+        pdf_bytes = io.BytesIO(response.content)
+        reader = PdfReader(pdf_bytes)
+        text = ""
+
+        for i in reader.pages:
+            text = text + i.extract_text()
+        
+        return text
+    
+    else: 
+        return None
 
 cred = credentials.Certificate("backend/unoofirebaseadmin.json")
 
@@ -78,23 +97,36 @@ def convert_to_speech(text):
 def handle_voice_command():
     command = request.json.get('command').lower()
     page_url = None
+    pdf_url = "https://firebasestorage.googleapis.com/v0/b/unoo-45cb7.appspot.com/o/medical_report%20(1).pdf?alt=media&token=78165d10-1655-4d9c-ae44-543b17646069"
     
-    # Handle the specific voice command about appointments
-    if "appointment" in command or "today" in command:
-        # Respond with information about the user's appointments
-        response_text = "Today you have an appointment with Dr. Anand Raja"
+    # Fetch PDF content if the command involves a report
+    if "report" in command or "summarise" in command:
+        pdf_content1 = pdf_content(pdf_url)
+        if pdf_content1:
+            response = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "Summarize the following medical report."},
+                    {"role": "user", "content": pdf_content1}
+                ],
+                max_tokens=200,
+                temperature=0.7
+            )
+            response_text = response.choices[0].message.content
+        else:
+            response_text = "Unable to fetch the medical report."
     
-    # Handle the specific voice command to summarize medical report
-        
-    elif "hindi" in command and "summarise" in command:
-        # Provide a summary of Atharv medical report in hindi
-        response_text = "Atharv Rastogi, jo ki 26 saal ka hai, recent test results ke hisaab se bilkul healthy hai. Uska blood pressure perfect hai, 120/80, aur blood sugar bhi bilkul normal hai, 90 mg/dL. Cholesterol levels fit hain, 190 mg/dL, aur vitamin D levels bhi sahi hain, jo acchi diet aur dhoop lene se ho sakte hain. Uska hemoglobin 14 g/dL hai, jo dikhata hai ki uske blood mein oxygen levels kaafi ache hain. Immune system bhi strong hai kyunki white blood cell count 5,000 /µL hai. Platelets bhi theek hain, 250,000 /µL, iska matlab uska blood clotting bhi normal hai. Sodium aur potassium levels normal hain, jo dikhata hai ki uska hydration aur electrolyte balance sahi hai. Calcium levels bhi theek hain, jo strong bones aur muscle function ka indicator hai. Overall, John ke saare test results normal range mein hain. Bas yaad rahe ki balanced diet, regular exercise aur routine checkups ko follow karta rahe."
+    # Dynamic medical response generation based on keywords
+    elif any(keyword in command for keyword in ["symptoms", "treatment", "diagnosis", "advice", "i have", "feeling"]):
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "system", "content": f"Provide medical information about: {command}"}],
+            max_tokens=200,
+            temperature=0.7
+        )
+        response_text = response.choices[0].message.content
     
-    elif "summarise" in command or "report" in command:
-        # Provide a summary of Atharv medical report
-        response_text = "Atharv Rastogi, a 26-year-old male, is in good health based on recent test results. His blood pressure is perfect at 120/80, and his blood sugar is well within the normal range at 90 mg/dL. Cholesterol levels are healthy at 190 mg/dL, and his vitamin D is normal, likely due to a good diet and sun exposure. His hemoglobin is at 14 g/dL, indicating good oxygen levels in his blood. His immune system looks healthy with a white blood cell count of 5,000 /µL, and his platelets are normal at 250,000 /µL, meaning his blood clotting is fine. Sodium and potassium levels are both normal, showing balanced hydration and electrolyte function. His calcium levels are also good, suggesting strong bones and muscle function. Overall, John's tests are all in the normal range. Just a reminder to keep up with a balanced diet, regular exercise, and routine checkups."
-    
-    # Default response for other navigation commands
+    # Handle navigation-related commands dynamically
     else:
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
@@ -111,14 +143,18 @@ def handle_voice_command():
             "diagnoses": "/diagnoses",
             "reports": "/reports"
         }
-        page_url = page_mapping.get(navigation_command, "/home")
+        
+        page_url = page_mapping.get(navigation_command, f"/{page_url}")
         response_text = f"Navigate to {page_url}"
+   
 
+
+    # Convert the response to speech and return
     audio_url = convert_to_speech(response_text)
     return jsonify({
         'text_response': response_text,
         'audio_url': audio_url,
-        'navigate_to': page_url  # Include the URL for navigation in the response
+        'navigate_to': page_url
     })
 
 @app.route('/output.mp3')

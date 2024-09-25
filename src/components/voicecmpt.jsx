@@ -57,9 +57,7 @@ const VoiceContainer = ({
         )}
       />
 
-      <div className={cn("relative z-10 flex items-center justify-center w-full h-full", className)}>
-        {children}
-      </div>
+      
     </div>
   );
 };
